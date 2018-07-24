@@ -1,23 +1,16 @@
 class Piece
-  attr_reader :grid, :value, :type, :board, :color, :pos
+  attr_reader :grid, :value, :type, :board, :color, :pos, :name
 
   def initialize(color, board, pos)
     @color = color
     @board = board
     @pos = pos
     @type = []
-  end
-
-  def empty?
-
+    @name
   end
 
   def to_s
     p @value
-  end
-
-  def valid_moves
-
   end
 
   def pos=(val)
@@ -28,11 +21,19 @@ class Piece
 
   end
 
-
+  def opposite_color
+    if @color == 'white'
+      return 'black'
+    elsif @color == 'black'
+      return 'white'
+    else
+      return 'gray'
+    end
+  end
 end
 
 
-class NullPiece 
+class NullPiece
   attr_reader :value, :color
 
   def initialize

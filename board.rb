@@ -1,4 +1,4 @@
-require_relative 'pieces/piece.rb'
+require_relative 'piece.rb'
 require_relative 'load_pieces.rb'
 
 class Board
@@ -33,15 +33,16 @@ class Board
 
   def move_piece(start_pos, end_pos)
     if self[start_pos].class == NullPiece
-      raise MoveError.new("There is no piece at #{start_pos}")
+      puts "There is no piece at #{start_pos}"
     end
-    unless self[end_pos].class == NullPiece
-      raise MoveError.new("There is a piece at #{end_pos}")
-    end
+    # unless self[end_pos].color == self[start_pos].color && self[end_pos].color != 'gray'
+    #   raise "There is a piece at #{end_pos}"
+    # end
     piece = self[start_pos]
     if piece.possible_moves.include?(end_pos)
       add_piece(self[start_pos], end_pos)
       self[start_pos] = NullPiece.new
+      # return 'yes'
     else
       puts "That is an invalid move"
     end
