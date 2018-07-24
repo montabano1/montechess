@@ -39,10 +39,15 @@ class NullPiece
   def initialize
     @value = ' '
     @color = 'gray'
+    @pos = nil
   end
 
   def possible_moves
     [[]]
+  end
+
+  def pos=(val)
+    @pos = val
   end
 
 end

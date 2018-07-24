@@ -4,7 +4,8 @@ require_relative 'load_pieces.rb'
 class Board
 
 
-  attr_reader :grid, :piece, :pieces_array
+  attr_reader :grid, :piece, :black_pieces, :white_pieces
+  attr_accessor :last_move, :last_move_piece
 
   def initialize
     @grid = Array.new(8) {Array.new(8, NullPiece.new)}
@@ -15,8 +16,8 @@ class Board
     @grid[0][2] = Bishop.new('black', self, [0,2])
     @grid[0][5] = Bishop.new('black', self, [0,5])
     @grid[0][3] = Queen.new('black', self, [0,3])
-    @black_king = King.new('black', self, [0,4])
-    @grid[0][4] = @black_king
+    @grid[0][4] = King.new('black', self, [0,4])
+    @black_king = @grid[0][4]
     @grid[7][0] = Rook.new('white', self, [7,0])
     @grid[7][7] = Rook.new('white', self, [7,7])
     @grid[7][1] = Knight.new('white', self, [7,1])
@@ -24,28 +25,40 @@ class Board
     @grid[7][2] = Bishop.new('white', self, [7,2])
     @grid[7][5] = Bishop.new('white', self, [7,5])
     @grid[7][3] = Queen.new('white', self, [7,3])
-    @white_king = King.new('white', self, [7,4])
-    @grid[7][4] = @white_king
+    @grid[7][4] = King.new('white', self, [7,4])
+    @white_king = @grid[7][4]
     @grid[1].map!.with_index {|el, idx| el = Pawn.new('black', self, [1,idx])}
     @grid[6].map!.with_index {|el, idx| el = Pawn.new('white', self, [6,idx])}
-    @pieces_array = @grid[0] + @grid[1] + @grid[6] + @grid[7]
+    @black_pieces = @grid[0] + @grid[1]
+    @white_pieces = @grid[6] + @grid[7]
+    @last_move = []
+    @last_move_piece = nil
   end
 
   def move_piece(start_pos, end_pos)
     if self[start_pos].class == NullPiece
       puts "There is no piece at #{start_pos}"
+    elsif self[end_pos].color == self[start_pos].color
+      puts "There is a piece at #{end_pos}"
     end
-    # unless self[end_pos].color == self[start_pos].color && self[end_pos].color != 'gray'
-    #   raise "There is a piece at #{end_pos}"
-    # end
     piece = self[start_pos]
     if piece.possible_moves.include?(end_pos)
+      @last_move_piece = self[end_pos]
       add_piece(self[start_pos], end_pos)
       self[start_pos] = NullPiece.new
-      # return 'yes'
+      @last_move << [start_pos, end_pos]
+      return 'yes'
     else
       puts "That is an invalid move"
     end
+  end
+
+  def undo_last_move
+    @last_move_piece
+    @last_move
+    add_piece(self[@last_move.last[1]], @last_move.last[0])
+    add_piece(@last_move_piece, @last_move.last[1])
+    @last_move.pop
   end
 
   def [](pos)
@@ -68,22 +81,44 @@ class Board
     piece.pos = pos
   end
 
-  def checkmate?(color)
+  # def checkmate?(color)
+  #   if self.in_check?(color)
+  #     if color == 'white'
+  #       @white_pieces.each do |piece|
+  #         piece.possible_moves.each do |poss|
+  #           if move_piece(piece.pos, poss) && self.in_check?(color) == false
+  #             return false
+  #           else undo_last_move
+  #           end
+  #         end
+  #       end
+  #     else
+  #       @black_pieces.each do |piece|
+  #         piece.possible_moves.each do |poss|
+  #           if move_piece(piece.pos, poss) && self.in_check?(color) == false
+  #             return false
+  #           else undo_last_move
+  #           end
+  #         end
+  #       end
+  #     end
+  #   end
+  #   return true
+  # end
 
-  end
-
-  def in_check?
-    @pieces_array.any? do |piece|
-      (piece.possible_moves.include?(@black_king.pos) ||
-      piece.possible_moves.include?(@white_king.pos))
+  def in_check?(color)
+    if color == 'white'
+      @black_pieces.any? do |piece|
+        piece.possible_moves.include?(@white_king.pos)
+      end
+    else
+      @white_pieces.any? do |piece|
+        piece.possible_moves.include?(@black_king.pos)
+      end
     end
   end
 
-  def test
-    ans = []
-    @pieces_array.each {|el| ans << el.value}
-    ans
-  end
+
 
   def find_king(color)
 

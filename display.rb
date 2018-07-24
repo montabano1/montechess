@@ -18,44 +18,39 @@ class Display
     players = ['white','black']
     alph_conversion = ('A'..'H').to_a
     system "clear"
+    render
     while true
-      render
-      until @cursor.selected
+      until @cursor.selected && @board[@cursor.cursor_pos].color == players[0]
+        if @board.in_check?(players[0])
+          # if @board.checkmate?(players[0])
+          #   puts 'CHECKMATE'
+          # else
+            puts 'CHECK'
+          # end
+        end
+        puts players[0] + "'s turn"
+        @cursor.selected = false
         @cursor.get_input
         system "clear"
         render
       end
       start_pos = @cursor.cursor_pos
+      system "clear"
+      render
+      piece = @board[start_pos].class.to_s
       @cursor.toggle_selected
       until @cursor.selected
+        puts 'Where would you like to move the ' + piece + ' at ' + start_pos.to_s
         @cursor.get_input
         system "clear"
         render
       end
       end_pos = @cursor.cursor_pos
       @cursor.toggle_selected
-      board.move_piece(start_pos, end_pos)
-    end
-    #   if board.in_check?
-    #     puts "CHECK"
-    #   end
-    #   puts "#{players.first} pick a starting row (0-7): "
-    #   row = gets.chomp.to_i
-    #   puts "#{players.first} pick a starting column (A-H)"
-    #   col = alph_conversion.index(gets.chomp.upcase)
-    #   puts "#{players.first} pick an ending row (0-7)"
-    #   rowend = gets.chomp.to_i
-    #   puts "#{players.first} pick an ending column (A-H)"
-    #   colend = alph_conversion.index(gets.chomp.upcase)
-      if board[start_pos].color == players.first
-        if board.move_piece(start_pos, end_pos) == 'yes'
-          players.rotate!
-        end
+      if board.move_piece(start_pos, end_pos) == 'yes'
+        players.rotate!
       end
-    #
-    #   end
-    #   render
-    # end
+    end
   end
 
   def render
@@ -93,7 +88,7 @@ class Display
   end
 
 end
-
+#
 b = Board.new
 d = Display.new(b)
 d.play

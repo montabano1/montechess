@@ -1,5 +1,5 @@
 module SlidingPiece
-  MOVES = {
+  SLIDINGMOVES = {
     :upleft => [-1, -1],
     :upright => [-1, 1],
     :downleft => [1, -1],
@@ -17,11 +17,11 @@ module SlidingPiece
       ul_or_dr = []
 
       #moving up and left
-      cur_pos = [@pos[0] + MOVES[:upleft][0], @pos[1] + MOVES[:upleft][1]]
+      cur_pos = [@pos[0] + SLIDINGMOVES[:upleft][0], @pos[1] + SLIDINGMOVES[:upleft][1]]
       while (board.valid_pos?(cur_pos) &&
         board.grid[cur_pos[0]][cur_pos[1]].class == NullPiece)
           ul_or_dr << cur_pos
-          cur_pos = [cur_pos[0] + MOVES[:upleft][0], cur_pos[1] + MOVES[:upleft][1]]
+          cur_pos = [cur_pos[0] + SLIDINGMOVES[:upleft][0], cur_pos[1] + SLIDINGMOVES[:upleft][1]]
       end
       if board.valid_pos?(cur_pos)
         if board.grid[cur_pos[0]][cur_pos[1]].color != @color
@@ -30,11 +30,11 @@ module SlidingPiece
       end
 
       #moving down and right
-      cur_pos = [@pos[0] + MOVES[:downright][0], @pos[1] + MOVES[:downright][1]]
+      cur_pos = [@pos[0] + SLIDINGMOVES[:downright][0], @pos[1] + SLIDINGMOVES[:downright][1]]
       while (board.valid_pos?(cur_pos) &&
         board.grid[cur_pos[0]][cur_pos[1]].class == NullPiece)
           ul_or_dr << cur_pos
-          cur_pos = [cur_pos[0] + MOVES[:downright][0], cur_pos[1] + MOVES[:downright][1]]
+          cur_pos = [cur_pos[0] + SLIDINGMOVES[:downright][0], cur_pos[1] + SLIDINGMOVES[:downright][1]]
       end
       if board.valid_pos?(cur_pos)
         if board.grid[cur_pos[0]][cur_pos[1]].color != @color
@@ -45,11 +45,11 @@ module SlidingPiece
       ur_or_dl = []
 
       #moving down and left
-      cur_pos = [@pos[0] + MOVES[:downleft][0], @pos[1] + MOVES[:downleft][1]]
+      cur_pos = [@pos[0] + SLIDINGMOVES[:downleft][0], @pos[1] + SLIDINGMOVES[:downleft][1]]
       while (board.valid_pos?(cur_pos) &&
         board.grid[cur_pos[0]][cur_pos[1]].class == NullPiece)
           ul_or_dr << cur_pos
-          cur_pos = [cur_pos[0] + MOVES[:downleft][0], cur_pos[1] + MOVES[:downleft][1]]
+          cur_pos = [cur_pos[0] + SLIDINGMOVES[:downleft][0], cur_pos[1] + SLIDINGMOVES[:downleft][1]]
       end
       if board.valid_pos?(cur_pos)
         if board.grid[cur_pos[0]][cur_pos[1]].color != @color
@@ -58,11 +58,11 @@ module SlidingPiece
       end
 
       #moving up and right
-      cur_pos = [@pos[0] + MOVES[:upright][0], @pos[1] + MOVES[:upright][1]]
+      cur_pos = [@pos[0] + SLIDINGMOVES[:upright][0], @pos[1] + SLIDINGMOVES[:upright][1]]
       while (board.valid_pos?(cur_pos) &&
         board.grid[cur_pos[0]][cur_pos[1]].class == NullPiece)
           ul_or_dr << cur_pos
-          cur_pos = [cur_pos[0] + MOVES[:upright][0], cur_pos[1] + MOVES[:upright][1]]
+          cur_pos = [cur_pos[0] + SLIDINGMOVES[:upright][0], cur_pos[1] + SLIDINGMOVES[:upright][1]]
       end
       if board.valid_pos?(cur_pos)
         if board.grid[cur_pos[0]][cur_pos[1]].color != @color
@@ -79,11 +79,11 @@ module SlidingPiece
       up_or_down = []
 
       #moving up
-      cur_pos = [@pos[0] + MOVES[:up][0], @pos[1]]
+      cur_pos = [@pos[0] + SLIDINGMOVES[:up][0], @pos[1]]
       while (board.valid_pos?(cur_pos) &&
         board.grid[cur_pos[0]][cur_pos[1]].class == NullPiece)
           up_or_down << cur_pos
-          cur_pos = [cur_pos[0] + MOVES[:up][0], cur_pos[1]]
+          cur_pos = [cur_pos[0] + SLIDINGMOVES[:up][0], cur_pos[1]]
       end
       if board.valid_pos?(cur_pos)
         if board.grid[cur_pos[0]][cur_pos[1]].color != @color
@@ -92,11 +92,11 @@ module SlidingPiece
       end
 
       #moving down and right
-      cur_pos = [@pos[0] + MOVES[:down][0], @pos[1]]
+      cur_pos = [@pos[0] + SLIDINGMOVES[:down][0], @pos[1]]
       while (board.valid_pos?(cur_pos) &&
         board.grid[cur_pos[0]][cur_pos[1]].class == NullPiece)
           up_or_down << cur_pos
-          cur_pos = [cur_pos[0] + MOVES[:down][0], cur_pos[1]]
+          cur_pos = [cur_pos[0] + SLIDINGMOVES[:down][0], cur_pos[1]]
       end
       if board.valid_pos?(cur_pos)
         if board.grid[cur_pos[0]][cur_pos[1]].color != @color
@@ -107,11 +107,11 @@ module SlidingPiece
       left_or_right = []
 
       #moving left
-      cur_pos = [@pos[0], @pos[1] + MOVES[:left][1]]
+      cur_pos = [@pos[0], @pos[1] + SLIDINGMOVES[:left][1]]
       while (board.valid_pos?(cur_pos) &&
         board.grid[cur_pos[0]][cur_pos[1]].class == NullPiece)
           left_or_right << cur_pos
-          cur_pos = [cur_pos[0], cur_pos[1] + MOVES[:left][1]]
+          cur_pos = [cur_pos[0], cur_pos[1] + SLIDINGMOVES[:left][1]]
       end
       if board.valid_pos?(cur_pos)
         if board.grid[cur_pos[0]][cur_pos[1]].color != @color
@@ -120,11 +120,11 @@ module SlidingPiece
       end
 
       #moving up and right
-      cur_pos = [@pos[0], @pos[1] + MOVES[:right][1]]
+      cur_pos = [@pos[0], @pos[1] + SLIDINGMOVES[:right][1]]
       while (board.valid_pos?(cur_pos) &&
         board.grid[cur_pos[0]][cur_pos[1]].class == NullPiece)
           left_or_right << cur_pos
-          cur_pos = [cur_pos[0], cur_pos[1] + MOVES[:right][1]]
+          cur_pos = [cur_pos[0], cur_pos[1] + SLIDINGMOVES[:right][1]]
       end
       if board.valid_pos?(cur_pos)
         if board.grid[cur_pos[0]][cur_pos[1]].color != @color

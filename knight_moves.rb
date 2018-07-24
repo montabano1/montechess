@@ -1,6 +1,6 @@
 module KnightMoves
 
-  MOVES = {
+  KNIGHTMOVES = {
     :upleft => [-1, -2],
     :upright => [-1, 2],
     :downleft => [1, -2],
@@ -14,9 +14,11 @@ module KnightMoves
   def possible_moves
     possible_moves = []
 
-    MOVES.each do |k,v|
+    KNIGHTMOVES.each do |k,v|
 
-      if (board.valid_pos?([@pos[0] + v[0], @pos[1] + v[1]]) && board.grid[@pos[0] + v[0]][@pos[1] + v[1]].color != @color)
+      if (board.valid_pos?([@pos[0] + v[0], @pos[1] + v[1]]) &&
+        board.grid[@pos[0] + v[0]][@pos[1] + v[1]].color != @color)
+
         possible_moves << [@pos[0] + v[0], @pos[1] + v[1]]
       end
     end

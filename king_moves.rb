@@ -1,6 +1,6 @@
 module KingMoves
 
-  MOVES = {
+  KINGMOVES = {
     :upleft => [-1, -1],
     :upright => [-1, 1],
     :downleft => [1, -1],
@@ -14,9 +14,11 @@ module KingMoves
   def possible_moves
     possible_moves = []
 
-    MOVES.each do |k,v|
+    KINGMOVES.each do |k,v|
 
-      if (board.valid_pos?([@pos[0] + v[0], @pos[1] + v[1]]) && board.grid[@pos[0] + v[0]][@pos[1] + v[0]].color != @color)
+      if (board.valid_pos?([@pos[0] + v[0], @pos[1] + v[1]]) &&
+        board.grid[@pos[0] + v[0]][@pos[1] + v[1]].color != @color)
+
         possible_moves << [@pos[0] + v[0], @pos[1] + v[1]]
       end
     end
