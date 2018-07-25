@@ -10,6 +10,7 @@ KEYMAP = {
   "a" => :left,
   "s" => :down,
   "d" => :right,
+  "u" => :undo,
   "\t" => :tab,
   "\r" => :return,
   "\n" => :newline,
@@ -62,6 +63,8 @@ class Cursor
     when :left, :right, :up, :down
       update_pos(MOVES[key])
       nil
+    # when :undo
+    #   @board.undo_last_move
     else
       puts key
     end

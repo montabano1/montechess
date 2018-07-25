@@ -47,15 +47,29 @@ class Board
       add_piece(self[start_pos], end_pos)
       self[start_pos] = NullPiece.new
       @last_move << [start_pos, end_pos]
-      return 'yes'
+      piece.pos = end_pos
+      if self.in_check?(piece.color)
+        self.undo_last_move
+        piece.pos = start_pos
+      else
+        if piece.color == 'white'
+          @black_pieces.delete(@last_move_piece)
+        else
+          @white_pieces.delete(@last_move_piece)
+        end
+        return 'yes'
+      end
     else
       puts "That is an invalid move"
     end
   end
 
   def undo_last_move
-    @last_move_piece
-    @last_move
+    if @last_move_piece.color == 'white'
+      @white_pieces << @last_move_piece
+    elsif @last_move_piece.color == 'black'
+      @black_pieces << @last_move_piece
+    end 
     add_piece(self[@last_move.last[1]], @last_move.last[0])
     add_piece(@last_move_piece, @last_move.last[1])
     @last_move.pop
@@ -81,30 +95,32 @@ class Board
     piece.pos = pos
   end
 
-  # def checkmate?(color)
-  #   if self.in_check?(color)
-  #     if color == 'white'
-  #       @white_pieces.each do |piece|
-  #         piece.possible_moves.each do |poss|
-  #           if move_piece(piece.pos, poss) && self.in_check?(color) == false
-  #             return false
-  #           else undo_last_move
-  #           end
-  #         end
-  #       end
-  #     else
-  #       @black_pieces.each do |piece|
-  #         piece.possible_moves.each do |poss|
-  #           if move_piece(piece.pos, poss) && self.in_check?(color) == false
-  #             return false
-  #           else undo_last_move
-  #           end
-  #         end
-  #       end
-  #     end
-  #   end
-  #   return true
-  # end
+  def checkmate?(color)
+    if self.in_check?(color)
+      if color == 'white'
+        @white_pieces.each do |piece|
+          piece.possible_moves.each do |poss|
+            if move_piece(piece.pos, poss) && self.in_check?('white') == false
+              undo_last_move
+              return false
+            end
+          end
+        end
+      else
+        @black_pieces.each do |piece|
+          piece.possible_moves.each do |poss|
+            if move_piece(piece.pos, poss) && self.in_check?('black') == false
+              undo_last_move
+              return false
+            end
+          end
+        end
+      end
+      return true
+    else
+      return false
+    end
+  end
 
   def in_check?(color)
     if color == 'white'

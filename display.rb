@@ -19,14 +19,14 @@ class Display
     alph_conversion = ('A'..'H').to_a
     system "clear"
     render
-    while true
+    until @board.checkmate?('white') || @board.checkmate?('black')
       until @cursor.selected && @board[@cursor.cursor_pos].color == players[0]
         if @board.in_check?(players[0])
-          # if @board.checkmate?(players[0])
-          #   puts 'CHECKMATE'
-          # else
+          if @board.checkmate?(players[0])
+            puts 'CHECKMATE'
+          else
             puts 'CHECK'
-          # end
+          end
         end
         puts players[0] + "'s turn"
         @cursor.selected = false
@@ -88,7 +88,14 @@ class Display
   end
 
 end
-#
+
 b = Board.new
 d = Display.new(b)
 d.play
+b.move_piece([6,4], [5,4])
+b.move_piece([1,4], [3,4])
+b.move_piece([7,3], [5,5])
+b.move_piece([1,3], [2,3])
+b.move_piece([7,5], [4,2])
+b.move_piece([1,0], [2,0])
+b.move_piece([5,5], [1,5])
