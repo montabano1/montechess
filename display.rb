@@ -76,7 +76,6 @@ class Display
             print piece.value.to_s.colorize(:blue)
           end
           print ' '
-          # print piece.value
         end
       end
       print '|'
@@ -88,14 +87,3 @@ class Display
   end
 
 end
-
-b = Board.new
-d = Display.new(b)
-d.play
-b.move_piece([6,4], [5,4])
-b.move_piece([1,4], [3,4])
-b.move_piece([7,3], [5,5])
-b.move_piece([1,3], [2,3])
-b.move_piece([7,5], [4,2])
-b.move_piece([1,0], [2,0])
-b.move_piece([5,5], [1,5])
